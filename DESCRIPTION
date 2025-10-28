@@ -1,0 +1,59 @@
+Package: OmniOmicsR
+Type: Package
+Title: End-to-End Multi-Omics Processing in R
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "OmniOmicsR", family = "Authors", role = c("aut", "cre"),
+           email = "omniomicsr@example.org")
+    )
+Description: OmniOmicsR provides an end-to-end multi-omics workflow in R:
+    import, quality control, normalization, batch correction, integration,
+    visualization, statistical analysis, and export. It is designed to work
+    with Bioconductor classes like SummarizedExperiment and MultiAssayExperiment.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3)
+Imports:
+    data.table,
+    Matrix,
+    Rcpp,
+    methods,
+    stats,
+    utils,
+    ggplot2,
+    SummarizedExperiment,
+    S4Vectors,
+    MultiAssayExperiment,
+    BiocParallel,
+    DelayedArray
+Suggests:
+    edgeR,
+    DESeq2,
+    limma,
+    sva,
+    mixOmics,
+    MOFA2,
+    batchelor,
+    harmony,
+    impute,
+    RGCCA,
+    uwot,
+    circlize,
+    enrichplot,
+    scater,
+    scran,
+    lme4,
+    AnnotationDbi,
+    clusterProfiler,
+    ReactomePA,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    KEGGREST,
+    testthat (>= 3.0.0),
+    quarto,
+    rmarkdown
+LinkingTo: Rcpp
+SystemRequirements: C++11
+Roxygen: list(markdown = TRUE)
+BugReports: https://github.com/your-org/OmniOmicsR/issues
+URL: https://github.com/your-org/OmniOmicsR

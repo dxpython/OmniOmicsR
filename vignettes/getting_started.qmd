@@ -1,0 +1,14 @@
+---
+title: "Getting Started with OmniOmicsR"
+format: html
+---
+
+```r
+library(OmniOmicsR)
+f <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
+oe <- read_omics_matrix(f, omics_type = "rna") |>
+  qc_basic() |>
+  normalize_tmm()
+plot_qc(oe)
+```
+

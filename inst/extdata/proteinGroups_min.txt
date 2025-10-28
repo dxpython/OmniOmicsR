@@ -1,0 +1,5 @@
+Protein IDs	Gene names	LFQ intensity S1	LFQ intensity S2	Reverse	Only identified by site	Potential contaminant
+P001	GENE1	100000	200000			
+P002	GENE2	0	5000			
+REV__P003	GENE3	20000	15000	+		
+P004	GENE4	30000	0			+

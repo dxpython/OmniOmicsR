@@ -1,0 +1,18 @@
+---
+output: github_document
+---
+
+# OmniOmicsR
+
+End-to-end R multi-omics processing (import → QC → normalize → batch → integrate → visualize → export).
+
+```r
+# install.packages("remotes"); remotes::install_github("your-org/OmniOmicsR")
+library(OmniOmicsR)
+f <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
+rna <- read_omics_matrix(f, omics_type = "rna") |>
+  qc_basic() |>
+  normalize_tmm()
+plot_qc(rna)
+```
+

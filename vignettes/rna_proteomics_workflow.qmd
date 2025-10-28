@@ -1,0 +1,36 @@
+---
+title: "RNA + Proteomics Workflow"
+format: html
+---
+
+```r
+library(OmniOmicsR)
+
+# toy RNA
+f_rna <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
+rna <- read_omics_matrix(f_rna, omics_type = "rna") |>
+  qc_basic() |>
+  normalize_tmm()
+
+# toy Proteomics
+f_pro <- system.file("extdata/proteinGroups_min.txt", package = "OmniOmicsR")
+prot <- read_maxquant(f_pro)
+
+# add mock group
+cd <- SummarizedExperiment::colData(rna)
+cd$group <- factor(rep(c("A","B"), length.out = nrow(cd)))
+SummarizedExperiment::colData(rna) <- cd
+
+# DEA
+de <- tryCatch(dea_edgeR(rna, design_formula = ~ group, coef = 2), error = function(e) NULL)
+if (!is.null(de)) plot_volcano(de$result)
+
+# Project assembly
+op <- as_op(list(rna = rna, protein = prot))
+
+# Integration via DIABLO (requires mixOmics and group labels)
+if (requireNamespace("mixOmics", quietly = TRUE)) {
+  fit <- tryCatch(integrate_diablo(op, ncomp = 2), error = function(e) NULL)
+}
+```
+

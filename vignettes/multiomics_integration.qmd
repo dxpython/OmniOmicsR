@@ -1,0 +1,40 @@
+---
+title: "Multi-Omics Integration & Report"
+format: html
+---
+
+```r
+library(OmniOmicsR)
+
+# RNA toy data
+f_rna <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
+rna <- read_omics_matrix(f_rna, omics_type = "rna") |> qc_basic() |> normalize_tmm()
+
+# Proteomics toy data
+f_pro <- system.file("extdata/proteinGroups_min.txt", package = "OmniOmicsR")
+prot <- read_maxquant(f_pro)
+
+# For DIABLO, supply a group label
+cd <- colData(rna); cd$group <- factor(rep(c("A","B"), length.out = nrow(cd)))
+colData(rna) <- cd
+
+# Build project
+op <- as_op(list(rna = rna, protein = prot))
+
+# Integration examples (run if packages available)
+if (requireNamespace("mixOmics", quietly = TRUE)) {
+  fit_diablo <- try(integrate_diablo(op, ncomp = 2), silent = TRUE)
+}
+if (requireNamespace("MOFA2", quietly = TRUE)) {
+  fit_mofa <- try(integrate_mofa(op, n_factors = 2), silent = TRUE)
+}
+
+# Circos integration (requires circlize)
+if (requireNamespace("circlize", quietly = TRUE)) {
+  try(plot_circos_integrate(rna, prot, assay_x = "norm", threshold = 0.3, top = 50), silent = TRUE)
+}
+
+# Export a minimal report (quarto/rmarkdown)
+export_op_report(op, out = "omni_report.html")
+```
+

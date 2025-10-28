@@ -1,0 +1,93 @@
+url: https://your-org.github.io/OmniOmicsR/
+template:
+  bootstrap: 5
+  bootswatch: flatly
+pkgdown:
+  as_is: true
+
+home:
+  title: OmniOmicsR
+  description: End-to-end R multi-omics processing
+
+navbar:
+  structure:
+    left: [reference, articles]
+    right: [github]
+  components:
+    github:
+      icon: fab fa-github
+      href: https://github.com/your-org/OmniOmicsR
+
+articles:
+  - title: Getting Started
+    contents:
+      - vignettes/getting_started.qmd
+  - title: RNA + Proteomics
+    contents:
+      - vignettes/rna_proteomics_workflow.qmd
+  - title: Single-Cell Workflow
+    contents:
+      - vignettes/singlecell_workflow.qmd
+  - title: Multi-Omics Integration
+    contents:
+      - vignettes/multiomics_integration.qmd
+
+reference:
+  - title: Core Classes
+    contents:
+      - as_oe
+      - as_op
+  - title: IO
+    contents:
+      - read_omics_matrix
+      - read_maxquant
+      - read_mztab
+      - read_seurat
+  - title: QC & Preprocess
+    contents:
+      - qc_basic
+      - qc_mito_ratio
+      - qc_saturation
+      - sc_hvg
+      - normalize_tmm
+      - normalize_quantile
+      - normalize_vst
+      - normalize_rlog
+      - impute_minprob
+      - impute_knn
+      - batch_combat
+      - batch_mnn
+      - batch_harmony
+  - title: Differential Expression
+    contents:
+      - dea_deseq2
+      - dea_edgeR
+      - dea_limma
+  - title: Enrichment & Mapping
+    contents:
+      - map_ids
+      - map_kegg_compound
+      - pathway_enrich
+      - plot_enrichment
+  - title: Integration
+    contents:
+      - integrate_diablo
+      - integrate_rgcca
+      - integrate_canonical
+      - integrate_mofa
+  - title: Visualization
+    contents:
+      - plot_qc
+      - plot_pca
+      - plot_umap
+      - theme_omni
+      - plot_volcano
+      - plot_heatmap
+      - plot_batch_compare
+      - plot_circos_integrate
+  - title: Export & Persistence
+    contents:
+      - export_op_report
+      - save_project
+      - load_project
+      - replay

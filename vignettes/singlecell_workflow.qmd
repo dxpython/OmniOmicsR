@@ -1,0 +1,33 @@
+---
+title: "Single-Cell Workflow"
+format: html
+---
+
+```r
+library(OmniOmicsR)
+
+# Demo with toy counts (not a real scRNA dataset)
+f <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
+sce <- read_omics_matrix(f, omics_type = "rna")
+
+# QC
+sce <- qc_basic(sce)
+sce <- qc_mito_ratio(sce)
+sce <- qc_saturation(sce)
+
+# HVG
+hvg <- sc_hvg(sce, top = 100)
+length(hvg)
+
+# Normalize (choose one transform)
+try({ sce <- normalize_vst(sce) }, silent = TRUE)
+try({ sce <- normalize_rlog(sce) }, silent = TRUE)
+# fallback: TMM
+sce <- normalize_tmm(sce)
+
+# UMAP (requires uwot)
+if (requireNamespace("uwot", quietly = TRUE)) {
+  plot_umap(sce, assay = if ("vst" %in% names(assays(sce))) "vst" else "norm")
+}
+```
+

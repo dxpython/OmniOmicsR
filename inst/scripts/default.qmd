@@ -1,0 +1,15 @@
+---
+title: "OmniOmicsR Report"
+format: html
+params:
+  summary: {}
+---
+
+## Summary
+
+Assays: `r paste(params$summary$assays, collapse = ", ")`
+
+Samples: `r params$summary$samples`
+
+This is a minimal Quarto template rendered by OmniOmicsR.
+
