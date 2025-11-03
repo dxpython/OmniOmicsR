@@ -21,7 +21,7 @@ From raw data ingestion to **quality control**, **normalization**, **batch corre
 ---
 ## Author
 
-**Dustin**--**Turning data into decisions, algorithms into value.**
+**Dustin Dong**--**Turning data into decisions, algorithms into value.**
 
 ---
 
