@@ -335,7 +335,7 @@ All with graceful fallbacks when unavailable
 | Clinical Integration | No | Yes |
 | Simulation | Basic examples | Comprehensive engine |
 | Benchmarking | None | Full suite |
-| Version | 0.0.0.9000 | 2.0.0 |
+| Version | 1.0.0 | 2.0.0 |
 
 ---
 
