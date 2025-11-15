@@ -281,7 +281,7 @@ This package integrates and extends numerous excellent tools:
 
 Most importantly, I want to thank Yanyan—the most important person in my life. Her unwavering support, encouragement, and belief in my abilities have been the foundation of every achievement. This project exists because of her strength and dedication. For that, I am deeply grateful.
 
-I am also sincerely thankful for the continuous support and collaboration from friends and colleagues at Tsinghua University, Shanghai Jiao Tong University, and Beijing University of Posts and Telecommunications. Their insights, discussions, and encouragement have played an invaluable role in shaping the development of this project.
+I am also sincerely thankful for the continuous support and collaboration from friends and colleagues at **Tsinghua University**, **Shanghai Jiao Tong University**, and **Beijing University of Posts and Telecommunications**. Their insights, discussions, and encouragement have played an invaluable role in shaping the development of this project.
 
 ---
 
