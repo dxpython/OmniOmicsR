@@ -1,7 +1,7 @@
 # OmniOmicsR: A Unified Framework for Multi-Omics and Clinical Integration
 
 <div align="center" style="padding:20px 0;">
-  <img src="images/OmniOmicsR.png"
+  <img src="images/Fig2.png"
        alt="OmniOmicsR"
        style="max-width:60%; height:auto; border-radius:10px;">
 </div>
