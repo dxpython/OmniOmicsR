@@ -271,7 +271,7 @@ This package integrates and extends numerous excellent tools:
 - **Bioconductor Core:** SummarizedExperiment, MultiAssayExperiment, S4Vectors
 - **Differential Expression:** edgeR, DESeq2, limma
 - **Multi-Omics Integration:** mixOmics (DIABLO), MOFA2, RGCCA
-- **Machine Learning:** keras/TensorFlow, ranger, xgboost, glmnet
+- **Machine Learning:** ranger, xgboost, glmnet
 - **Deep Learning (OmniGraphDiff):** PyTorch, PyTorch Geometric, pybind11, lifelines
 - **Network Analysis:** WGCNA, igraph, GENIE3
 - **Spatial Analysis:** Seurat, spatstat, Giotto
