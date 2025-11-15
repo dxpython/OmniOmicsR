@@ -1,4 +1,4 @@
-# OmniOmicsR v2.0 - Enhanced Architecture
+# OmniOmicsR v2.0
 
 ## Overview
 Complete rewrite with production-grade features, advanced ML/statistical methods, and multi-modal omics support.
