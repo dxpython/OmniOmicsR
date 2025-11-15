@@ -1,4 +1,4 @@
-# OmniOmicsR: A Unified Framework for Multi-Omics and Clinical Integration
+# OmniOmicsR: A Unified, Scalable, and Generative Framework for Next-Generation Multi-Omics and Clinical Integration
 
 <div align="center" style="padding:20px 0;">
   <img src="images/Fig2.png"
