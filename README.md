@@ -1,61 +1,88 @@
-# OmniOmicsR:A Unified, Scalable, and Generative Framework for Next-Generation Multi-Omics and Clinical Integration
-<div align="center">
-  <img src="images/OmniOmicsR.png" alt="OmniOmicsR" width="700">
+# OmniOmicsR: A Unified Framework for Multi-Omics and Clinical Integration
+
+<div align="center" style="padding:20px 0;">
+  <img src="images/OmniOmicsR.png"
+       alt="OmniOmicsR"
+       style="max-width:60%; height:auto; border-radius:10px;">
 </div>
+
+
+
+
+<div align="center">
+
 [![R Version](https://img.shields.io/badge/R-4.3%2B-blue.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+[![Bioconductor](https://img.shields.io/badge/Bioconductor-Compatible-orange.svg)](https://www.bioconductor.org/)
 [![Version](https://img.shields.io/badge/Version-2.0.0-success.svg)](DESCRIPTION)
 
----
-
-## Overview
-
-**OmniOmicsR v2.0** is a comprehensive R package for end-to-end multi-omics data analysis, integrating machine learning, Bayesian inference, spatial omics, single-cell analysis, and clinical outcomes within a unified, reproducible framework.
-
-Built on Bioconductor's S4 class system, OmniOmicsR enables:
-
-- 🧬 **Multi-omics integration** (RNA-seq, proteomics, metabolomics, spatial, single-cell)
-- 🤖 **Advanced ML** (VAE, Random Forest, XGBoost, ensemble methods)
-- 🧠 **Deep learning** (Graph neural networks, diffusion models via **OmniGraphDiff**)
-- 📊 **Sophisticated statistics** (Bayesian inference, network analysis, differential expression)
-- 🏥 **Clinical analysis** (survival, biomarkers, patient stratification)
+</div>
 
 ---
 
-## Key Features
+## 📋 Overview
 
-### Multi-Omics Integration
-- Native support for RNA-seq, proteomics, metabolomics, and Seurat objects
-- Integration methods: DIABLO, MOFA2, RGCCA, canonical correlation
-- Batch correction: ComBat, MNN, Harmony
+**OmniOmicsR** is a comprehensive R package for end-to-end multi-omics analysis—integrating machine learning, spatial omics, single-cell, and clinical outcomes in one unified framework.
 
-### Machine Learning & Deep Learning
-- **Variational Autoencoders (VAE)** for dimensionality reduction
-- **Ensemble methods**: Random Forest, XGBoost, stacking
-- **Feature selection**: LASSO, Elastic Net, Boruta, mRMR
-- **OmniGraphDiff**: Hierarchical graph neural networks, graph-VAE, diffusion models
-  - See [omnigraphdiff/README.md](omnigraphdiff/README.md) for details
+<div align="center">
 
-### Statistical Analysis
-- Bayesian inference (Stan/JAGS backends)
-- Network analysis (WGCNA, GENIE3, PPI enrichment)
-- Differential expression (edgeR, DESeq2, limma)
+| 🧬 Multi-Omics Integration | 🤖 Machine Learning & Deep Learning | 📊 Bayesian & Statistical Modeling |
+|---------------------------|------------------------------------|-----------------------------------|
+| 🗺️ Spatial Transcriptomics | 🔬 Single-Cell Multi-Omics | 🏥 Clinical Outcome Modeling |
 
-### Spatial & Single-Cell Analysis
-- Spatial transcriptomics with coordinate-based analyses
-- Single-cell multi-omics (CITE-seq, scATAC-seq, multiome)
-- Trajectory inference and cell-cell communication
+</div>
 
-### Clinical Integration
-- Survival analysis (Cox models, Kaplan-Meier)
-- Biomarker discovery and validation
-- Patient stratification and outcome prediction
 
 ---
 
-## Installation
+## ✨ Key Features
 
-### Quick Install
+<table>
+<tr>
+<td style="vertical-align:top; padding:15px; width:50%; border-right:1px solid #eaeaea;">
+
+### 🧬 Multi-Omics
+- RNA-seq, proteomics, metabolomics  
+- DIABLO, MOFA2, RGCCA integration  
+- ComBat, MNN, Harmony batch correction  
+
+### 🤖 Machine Learning
+- VAE, Random Forest, XGBoost  
+- LASSO, Elastic Net, Boruta  
+- Automated hyperparameter tuning  
+
+### 📊 Statistical Inference
+- Bayesian inference (Stan / JAGS)  
+- WGCNA, GENIE3 regulatory networks  
+- edgeR, DESeq2, limma pipelines  
+
+</td>
+
+<td style="vertical-align:top; padding:15px; width:50%;">
+
+### 🗺️ Spatial & Single-Cell
+- Spatial transcriptomics (Moran’s I, Geary’s C)  
+- CITE-seq, scATAC-seq, multiome  
+- Trajectory inference & cell communication  
+
+### 🏥 Clinical Integration
+- Survival analysis (Cox, KM curves)  
+- Biomarker discovery pipelines  
+- Patient stratification & risk modeling  
+
+### 🧠 Deep Learning (OmniGraphDiff)
+- Graph neural networks (GCN / GAT / GraphSAGE)  
+- Graph-VAE & diffusion models  
+- Multi-GPU mixed-precision training  
+
+</td>
+</tr>
+</table>
+
+
+---
+
+## 🛠️ Installation
 
 ```r
 # Install dependencies
@@ -65,103 +92,84 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("SummarizedExperiment", "MultiAssayExperiment"))
 
 # Install OmniOmicsR
-devtools::install_github("your-username/OmniOmicsR", dependencies = TRUE)
+devtools::install_github("dxpython/OmniOmicsR", dependencies = TRUE)
 ```
 
-### System Requirements
-- **R:** ≥ 4.3.0
-- **OS:** Linux, macOS, or Windows (WSL2 recommended)
-- **Memory:** 8GB minimum, 16GB+ recommended
+**Requirements:** R ≥ 4.3.0 • 8GB+ RAM • Linux/macOS/Windows (WSL2)
 
-For detailed installation instructions and optional packages, see [full documentation](#documentation).
+<details>
+<summary><b>Optional enhancement packages</b></summary>
+
+```r
+# Differential expression
+BiocManager::install(c("edgeR", "DESeq2", "limma", "sva"))
+
+# Multi-omics integration
+BiocManager::install(c("mixOmics", "MOFA2", "RGCCA"))
+
+# Machine learning
+install.packages(c("ranger", "xgboost", "glmnet", "Boruta"))
+
+# Network & spatial
+BiocManager::install(c("WGCNA", "Seurat", "spatstat"))
+
+# Clinical & Bayesian
+install.packages(c("survival", "survminer", "rstan"))
+```
+</details>
 
 ---
 
-## Quick Start
-
-### Basic Workflow
+## ⚡ Quick Start
 
 ```r
 library(OmniOmicsR)
 
-# Load and process data
+# Basic workflow
 rna_data <- read_omics_matrix("counts.csv", omics_type = "rna") |>
-  qc_basic() |>
-  normalize_tmm() |>
-  normalize_vst()
+  qc_basic() |> normalize_tmm() |> normalize_vst()
 
-# Visualization
 plot_pca(rna_data, color_by = "group")
-
-# Differential expression
 dea_results <- dea_deseq2(rna_data, design = ~group)
-sig_genes <- dea_results[dea_results$padj < 0.05, ]
-```
 
-### Multi-Omics Integration
-
-```r
-# Create project
+# Multi-omics integration
 omics_list <- list(RNA = rna_data, Protein = protein_data)
-project <- as_op(omics_list)
-
-# DIABLO integration
 integration <- integrate_diablo(omics_list, outcome = outcome, ncomp = 3)
-plot_circos_integrate(integration)
-```
 
-### Clinical Analysis
-
-```r
-# Create clinical project
+# Clinical analysis
 clinical_project <- create_clinical_project(
   omics_assays = omics_list,
   clinical_data = clinical_df,
   survival_data = survival_df
 )
-
-# Survival analysis and biomarker discovery
 survival_result <- clinical_survival(clinical_project)
 biomarkers <- clinical_biomarkers(clinical_project, outcome = stage)
 ```
 
-### Deep Learning with OmniGraphDiff
+<details>
+<summary><b>Deep Learning with OmniGraphDiff</b></summary>
 
 ```r
-# Use from R via reticulate
 library(reticulate)
 use_virtualenv("~/omnigraphdiff_env")
 
 ogd <- import("omnigraphdiff")
 model <- ogd$train$train_model(config_path = "config.yaml")
-
-# Extract embeddings for downstream analysis
 embeddings <- model$encode(list(rna = rna_mat, protein = protein_mat))
 ```
 
-See [omnigraphdiff/README.md](omnigraphdiff/README.md) for complete OmniGraphDiff documentation.
+See [omnigraphdiff/README.md](omnigraphdiff/README.md) for details.
+</details>
 
 ---
 
-## Documentation
+## 📚 Documentation
 
-### Core Documentation
-- **[Getting Started](vignettes/getting_started.qmd)** — Basic workflow
-- **[Architecture](ARCHITECTURE.md)** — Design principles
-- **[Multi-Omics Tutorial](vignettes/multiomics_integration.qmd)** — Integration methods
-
-### OmniGraphDiff (Deep Learning Module)
-- **[Overview & Installation](omnigraphdiff/README.md)** — Setup and training guide
-- **[Model Design](omnigraphdiff/MODEL_DESIGN.md)** — Mathematical formulation
-- **[Architecture](omnigraphdiff/ARCHITECTURE.md)** — System design
-
-### Function Reference
-```r
-?OmniOmicsR          # Package overview
-?OmicsExperiment     # Core S4 class
-?train_vae           # VAE training
-?clinical_survival   # Survival analysis
-```
+| Category | Resources |
+|----------|-----------|
+| **Getting Started** | [Tutorial](vignettes/getting_started.qmd) • [Architecture](ARCHITECTURE.md) • [Multi-Omics Guide](vignettes/multiomics_integration.qmd) |
+| **Deep Learning** | [OmniGraphDiff README](omnigraphdiff/README.md) • [Model Design](omnigraphdiff/MODEL_DESIGN.md) • [Architecture](omnigraphdiff/ARCHITECTURE.md) |
+| **Reference** | `?OmniOmicsR` • `?OmicsExperiment` • `?train_vae` • `?clinical_survival` |
 
 ---
 
@@ -169,75 +177,111 @@ See [omnigraphdiff/README.md](omnigraphdiff/README.md) for complete OmniGraphDif
 
 ```
 OmniOmicsR/
-├── R/                    # R source code
-├── src/                  # C++ source (Rcpp)
-├── inst/                 # Example data & templates
-├── tests/                # Test suite
-├── vignettes/            # Tutorials
-├── omnigraphdiff/        # Deep learning module (PyTorch)
-│   ├── omnigraphdiff/    # Python package
-│   ├── cpp_backend/      # C++ graph operations
-│   ├── examples/         # Training examples
-│   └── *.md              # Documentation
-└── DESCRIPTION           # Package metadata
+├── R/                          # R source code
+│   ├── 01-classes.R            # S4 class definitions
+│   ├── utils-*.R               # Utility functions
+│   ├── io-*.R                  # Data I/O
+│   ├── qc-*.R                  # Quality control
+│   ├── preprocess-*.R          # Normalization & batch correction
+│   ├── stats-*.R               # Statistical methods
+│   ├── ml-*.R                  # Machine learning
+│   ├── spatial-*.R             # Spatial omics
+│   ├── sc-*.R                  # Single-cell multi-omics
+│   ├── clinical-*.R            # Clinical integration
+│   ├── viz-*.R                 # Visualization
+│   ├── simulation-*.R          # Data simulation
+│   └── benchmark-*.R           # Benchmarking
+├── src/                        # C++ source (Rcpp)
+│   └── utils.cpp               # Fast matrix operations
+├── inst/                       # Installed files
+│   ├── extdata/                # Example datasets
+│   ├── scripts/                # Demo scripts
+│   └── templates/              # Report templates
+├── tests/                      # Test suite
+│   └── testthat/
+├── vignettes/                  # Tutorials
+├── omnigraphdiff/              # Deep learning module (PyTorch)
+│   ├── omnigraphdiff/          # Python package
+│   │   ├── models/             # GNN, VAE, Diffusion models
+│   │   ├── training/           # Trainer, callbacks, DDP
+│   │   ├── data/               # DataLoaders, HDF5/NPZ
+│   │   ├── losses/             # Multi-objective loss functions
+│   │   ├── graphs/             # Graph construction & ops
+│   │   └── utils/              # Config, logging, metrics
+│   ├── cpp_backend/            # C++ sparse graph operations
+│   ├── R/                      # R interface via reticulate
+│   ├── examples/               # Training demos & configs
+│   ├── tests/                  # Python unit tests
+│   ├── MODEL_DESIGN.md         # Mathematical formulation
+│   ├── ARCHITECTURE.md         # System design
+│   └── README.md               # Complete documentation
+└── DESCRIPTION                 # Package metadata
 ```
 
 ---
 
-## Testing & Performance
+## 🚀 Performance
+
+**Benchmarks**:
+
+| Operation | Time | Memory |
+|-----------|------|--------|
+| TMM normalization | <1s | ~800MB |
+| VAE training (10 epochs) | ~23s | ~1.2GB |
+| Random Forest | ~15s | ~1.5GB |
+| Multi-omics integration | ~40s | ~2.5GB |
 
 ```r
 # Run tests
 devtools::test()
 
-# Quick validation (~5 min)
-source(system.file("scripts/quick_validation.R", package = "OmniOmicsR"))
-
 # Benchmark
 benchmark_results <- benchmark_all(n_features = 10000, n_samples = 1000)
 ```
 
-**Performance** (10K features × 1K samples):
-- TMM normalization: <1s
-- VAE training (10 epochs): ~23s
-- Random Forest: ~15s
-- Multi-omics integration: ~40s
-
 ---
 
-## Contributing
+## 🤝 Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-```r
-# Development workflow
+```bash
+# Clone and setup
 git clone https://github.com/dxpython/OmniOmicsR.git
+cd OmniOmicsR
 git checkout -b feature/your-feature
-devtools::test()
-devtools::check()
+
+# Test and check
+R -e "devtools::test()"
+R -e "devtools::check()"
+
+# Submit pull request
+git add .
+git commit -m "Add: your feature description"
+git push origin feature/your-feature
 ```
-
----
-
-## Citation
-
-If you use OmniOmicsR in your research, please cite:
-
-```
-[Citation information to be added]
-```
-
 ---
 
 ## Acknowledgments
 
-OmniOmicsR builds on excellent work from the Bioconductor community:
+### Technical Foundations
 
-**Core packages:** SummarizedExperiment, MultiAssayExperiment, edgeR, DESeq2, limma, mixOmics, MOFA2, WGCNA, Seurat
+This package integrates and extends numerous excellent tools:
 
-**ML/DL frameworks:** keras/TensorFlow, PyTorch, ranger, xgboost
+- **Bioconductor Core:** SummarizedExperiment, MultiAssayExperiment, S4Vectors
+- **Differential Expression:** edgeR, DESeq2, limma
+- **Multi-Omics Integration:** mixOmics (DIABLO), MOFA2, RGCCA
+- **Machine Learning:** keras/TensorFlow, ranger, xgboost, glmnet
+- **Deep Learning (OmniGraphDiff):** PyTorch, PyTorch Geometric, pybind11, lifelines
+- **Network Analysis:** WGCNA, igraph, GENIE3
+- **Spatial Analysis:** Seurat, spatstat, Giotto
+- **Statistics:** survival, rstan, metafor
 
-**Personal thanks:** To Yanyan, whose unwavering support made this project possible.
+### Personal Acknowledgment
+
+Most importantly, I want to thank Yanyan—the most important person in my life. Her unwavering support, encouragement, and belief in my abilities have been the foundation of every achievement. This project exists because of her strength and dedication. For that, I am deeply grateful.
+
+I am also sincerely thankful for the continuous support and collaboration from friends and colleagues at Tsinghua University, Shanghai Jiao Tong University, and Beijing University of Posts and Telecommunications. Their insights, discussions, and encouragement have played an invaluable role in shaping the development of this project.
 
 ---
 
@@ -248,7 +292,5 @@ MIT License © 2025 Dustin Dong
 ---
 
 <div align="center">
-
-**Built with ❤️ for the multi-omics research community**
-
-</div>
+  
+*Built with for the multi-omics research community.Turning data into decisions, algorithms into value.*
