@@ -51,16 +51,16 @@ OmniGraphDiff is a **production-grade framework** for multi-omics data integrati
 │                     OmniGraphDiff System                    │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  ┌──────────┐      ┌──────────┐      ┌───────────┐        │
-│  │ R Layer  │ ───> │  Python  │ ───> │ C++ Back  │        │
-│  │(reticulate)     │(PyTorch) │      │(Eigen+    │        │
-│  │          │      │          │      │ OpenMP)   │        │
-│  └──────────┘      └──────────┘      └───────────┘        │
+│  ┌──────────┐      ┌──────────┐      ┌───────────┐          │
+│  │ R Layer  │ ───> │  Python  │ ───> │ C++ Back  │          │
+│  │(reticulate)     │(PyTorch) │      │(Eigen+    │          │
+│  │          │      │          │      │ OpenMP)   │          │
+│  └──────────┘      └──────────┘      └───────────┘          │
 │                                                             │
-│  ┌─────────────────────────────────────────────────┐       │
-│  │     Hierarchical Graph Structure                │       │
-│  │  Feature Graph | Sample Graph | Spatial Graph   │       │
-│  └─────────────────────────────────────────────────┘       │
+│  ┌─────────────────────────────────────────────────┐        │
+│  │     Hierarchical Graph Structure                │        │
+│  │  Feature Graph | Sample Graph | Spatial Graph   │        │
+│  └─────────────────────────────────────────────────┘        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
