@@ -1,14 +1,371 @@
 ---
 title: "Getting Started with OmniOmicsR"
-format: html
+author: "Dustin Dong"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    number-sections: true
+editor: visual
 ---
 
+## 1. Introduction
+
+`OmniOmicsR` is an **integrated R framework** for reproducible, end-to-end multi-omics analysis.  
+It is designed to:
+
+- unify **bulk omics**, **single-cell**, **spatial** and **clinical** data in a coherent S4 system  
+- provide **well-tested analysis pipelines** for QC, normalization, batch correction and integration  
+- bridge **classical statistics** and **modern deep learning** via the `OmniGraphDiff` backend  
+
+This vignette walks you through a minimal, yet representative multi-omics workflow:
+
+1. Loading the package and example data  
+2. Creating an `OmicsExperiment` object  
+3. Running basic QC and normalization  
+4. Performing differential expression and visualization  
+5. Building a simple multi-omics project  
+6. (Optional) Connecting to the deep learning backend `OmniGraphDiff`  
+
+If you can run this vignette from top to bottom, your installation is working correctly and you are ready to build more complex pipelines.
+
+---
+
+## 2. Installation and Setup
+
+### 2.1 Install OmniOmicsR
+
+If you have not installed `OmniOmicsR` yet, follow the instructions from the README.  
+In short, from within R:
+
 ```r
+# Install devtools if needed
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+
+# Install OmniOmicsR from GitHub
+devtools::install_github("dxpython/OmniOmicsR", dependencies = TRUE)
+
+Now load the package:
+
 library(OmniOmicsR)
-f <- system.file("extdata/example_counts.csv", package = "OmniOmicsR")
-oe <- read_omics_matrix(f, omics_type = "rna") |>
+sessionInfo()
+
+You should see OmniOmicsR in the loaded packages, along with core Bioconductor dependencies such as SummarizedExperiment and MultiAssayExperiment.
+
+⸻
+
+3. First Steps: A Minimal RNA-seq Workflow
+
+In this section we:
+	1.	Load a toy RNA-seq count matrix bundled with the package
+	2.	Wrap it in an OmicsExperiment
+	3.	Run basic QC and normalization
+	4.	Perform a simple differential expression analysis
+
+3.1 Loading the Example Data
+
+The package ships with a small example count matrix in inst/extdata/:
+
+counts_file <- system.file("extdata", "example_counts.csv", package = "OmniOmicsR")
+counts_file
+
+Read it into an OmicsExperiment object:
+
+rna <- read_omics_matrix(
+  file       = counts_file,
+  omics_type = "rna",
+  sample_col = "sample",
+  feature_col = "gene"
+)
+
+rna
+
+You should see a summary such as:
+	•	number of features (genes)
+	•	number of samples
+	•	basic metadata
+
+Internally, rna is stored as an S4 object that extends SummarizedExperiment, with additional slots for logs, processing history and omics-specific metadata.
+
+3.2 Basic Quality Control
+
+Run a basic QC pipeline:
+
+rna_qc <- rna |>
   qc_basic() |>
-  normalize_tmm()
-plot_qc(oe)
-```
+  qc_filter(min_counts = 10, min_samples = 3)
+
+rna_qc
+
+You can visualize QC metrics:
+
+plot_qc(rna_qc)
+
+This generates a QC plot (e.g., library size distributions, detected features per sample) and typically saves it as qc_plot.png in your working directory.
+
+3.3 Normalization
+
+Next, apply normalization. For bulk RNA-seq, a common choice is TMM:
+
+rna_norm <- rna_qc |>
+  normalize_tmm() |>
+  normalize_vst()
+
+rna_norm
+
+You can inspect the normalized counts:
+
+assay(rna_norm, "norm")
+
+and visualize sample relationships:
+
+plot_pca(rna_norm, color_by = "group")
+
+Here group is assumed to be a column in colData(rna_norm) representing sample conditions (e.g., Control vs Treatment).
+
+3.4 Differential Expression
+
+If your colData contains a group variable, you can run differential expression:
+
+dea <- dea_deseq2(
+  rna_norm,
+  design = ~ group
+)
+
+head(dea)
+
+Filter significant genes:
+
+sig <- subset(dea, padj < 0.05 & abs(log2FoldChange) > 1)
+nrow(sig)
+
+You can also generate a volcano plot or MA plot depending on the visualization utilities included in your installation:
+
+plot_volcano(dea, padj_cutoff = 0.05, lfc_cutoff = 1)
+
+
+⸻
+
+4. Building a Simple Multi-Omics Project
+
+A central concept in OmniOmicsR is the project-level container OmniProject, which extends MultiAssayExperiment and ties together multiple OmicsExperiment objects.
+
+In this section we:
+	1.	Create a toy proteomics OmicsExperiment
+	2.	Combine it with RNA-seq data
+	3.	Build an OmniProject
+	4.	Perform a small integration step
+
+4.1 Creating a Second Omics Layer (Proteomics)
+
+Assume we have a (bundled or user-provided) proteomics table such as MaxQuant output:
+
+proteins_file <- system.file(
+  "extdata", "proteinGroups_min.txt",
+  package = "OmniOmicsR"
+)
+
+prot <- read_maxquant(
+  file       = proteins_file,
+  prefer     = "LFQ",
+  log        = TRUE,
+  omics_type = "proteomics"
+)
+
+prot
+
+4.2 Aligning Samples and Creating a Project
+
+For simplicity, suppose our RNA and proteomics data share a common subset of samples:
+
+common_samples <- intersect(colnames(rna_norm), colnames(prot))
+
+rna_sub  <- rna_norm[, common_samples]
+prot_sub <- prot[, common_samples]
+
+Now build a named list of omics assays:
+
+omics_list <- list(
+  RNA      = rna_sub,
+  Protein  = prot_sub
+)
+
+Convert this list into an OmniProject:
+
+op <- as_op(omics_list)
+op
+
+The OmniProject acts as a central object for multi-omics integration, downstream modeling and reporting.
+
+4.3 Multi-Omics Integration (Conceptual Example)
+
+If you have the required integration packages installed (mixOmics, MOFA2, RGCCA), you can perform integration directly:
+
+# For example, DIABLO-like integration (pseudo-code, depending on your install):
+# outcome <- colData(rna_sub)$group
+# op_int <- integrate_diablo(
+#   op,
+#   outcome = outcome,
+#   ncomp   = 2
+# )
+#
+# plot_circos_integrate(op_int)
+
+The exact function names may differ slightly based on your current version of OmniOmicsR, but the idea is:
+	•	OmniProject holds multiple synchronized omics layers
+	•	Integration methods operate on the project as a whole
+	•	Visualizations (e.g. circos plots) are driven by integrated representations
+
+Please refer to the multiomics_integration.qmd vignette for a dedicated, full-length tutorial on DIABLO/MOFA2/RGCCA.
+
+⸻
+
+5. Adding Clinical Data and Survival Analysis
+
+Many multi-omics studies aim to link molecular profiles to clinical outcomes (e.g. survival, response, stage).
+OmniOmicsR supports project-level clinical integration via ClinicalOmicsProject.
+
+5.1 Example Clinical Data
+
+Here we generate a small synthetic clinical table for illustration:
+
+set.seed(123)
+
+clinical_data <- data.frame(
+  patient_id = colnames(rna_sub),
+  age        = rnorm(ncol(rna_sub), mean = 60, sd = 10),
+  sex        = sample(c("M", "F"), ncol(rna_sub), replace = TRUE),
+  stage      = sample(1:4, ncol(rna_sub), replace = TRUE),
+  stringsAsFactors = FALSE
+)
+
+survival_data <- data.frame(
+  time  = rexp(ncol(rna_sub), rate = 0.01),
+  event = rbinom(ncol(rna_sub), size = 1, prob = 0.6)
+)
+
+5.2 Creating a Clinical Project
+
+Assuming create_clinical_project() is available in your version:
+
+clinical_project <- create_clinical_project(
+  omics_assays  = omics_list,
+  clinical_data = clinical_data,
+  survival_data = survival_data
+)
+
+clinical_project
+
+5.3 Running Survival Analysis
+
+You can fit survival models directly:
+
+surv_res <- clinical_survival(
+  clinical_project,
+  omics_assay = "RNA",
+  n_top_features = 50
+)
+
+str(surv_res)
+
+And visualize survival curves:
+
+plot_survival(
+  clinical_project,
+  grouping = surv_res$groups
+)
+
+
+⸻
+
+6. Optional: Connecting to OmniGraphDiff (Deep Learning Backend)
+
+OmniOmicsR includes an optional deep learning backend, OmniGraphDiff, implemented in Python + C++ and exposed to R via reticulate.
+This backend provides:
+	•	Graph neural networks (GCN, GAT, GraphSAGE)
+	•	Graph-VAE for multi-modal latent representations
+	•	Diffusion-based generative models
+	•	Clinical prediction heads (e.g., Cox models)
+
+6.1 Prerequisites
+
+To use OmniGraphDiff, you need:
+	•	A working Python environment (e.g., conda)
+	•	PyTorch installed (with or without GPU support)
+	•	The omnigraphdiff package installed (from the omnigraphdiff/ subdirectory)
+
+See omnigraphdiff/BUILD_AND_RUN.md or the main README.md for detailed installation steps.
+
+6.2 Using OmniGraphDiff from R (High-Level Sketch)
+
+After the backend is installed and configured, you can call it from R:
+
+# Load the R wrapper
+source(system.file("r_interface", "R", "omnigraphdiff_wrapper.R",
+                   package = "OmniOmicsR"))
+
+# Fit the model on an OmniProject or ClinicalOmicsProject
+res_ogd <- fit_omnigraphdiff(
+  omniproject = clinical_project,
+  config_file = "omnigraphdiff/configs/default_tcga.yaml",
+  output_dir  = "omnigraphdiff_outputs/run1"
+)
+
+# Access latent embeddings and predictions
+latent <- res_ogd$latent_embeddings
+head(latent)
+
+This enables advanced downstream tasks such as:
+	•	graph-based multi-omics integration
+	•	deep survival modeling
+	•	semi-supervised learning on heterogeneous omics graphs
+
+A dedicated vignette (e.g., omnigraphdiff_integration.qmd) is recommended for detailed usage.
+
+⸻
+
+7. Reproducible Reports and Exports
+
+OmniOmicsR is designed with reproducibility in mind.
+
+Typical options include:
+	•	saving entire projects as RDS
+	•	generating Quarto/RMarkdown reports
+	•	re-running pipelines from logs or configuration files
+
+7.1 Saving a Project
+
+save_project(clinical_project, file = "my_clinical_project.rds")
+
+7.2 Generating a Report
+
+If report templates are available:
+
+export_op_report(
+  object      = clinical_project,
+  output_file = "my_project_report.html"
+)
+
+This will create a self-contained HTML report including QC summaries, visualizations, model outputs and key statistics.
+
+⸻
+
+8. Where to Go Next?
+
+This getting_started vignette only scratches the surface of what OmniOmicsR can do.
+
+Recommended next steps:
+	•	Read the Architecture Overview (ARCHITECTURE.md) for a deeper understanding of S4 classes and data flow
+	•	Explore the multi-omics integration vignette (multiomics_integration.qmd)
+	•	Try the single-cell and spatial vignettes if your data require them
+	•	Look into the OmniGraphDiff documentation for advanced graph-based deep learning workflows
+
+If you encounter issues or have feature requests, please open an issue on GitHub:
+
+https://github.com/dxpython/OmniOmicsR
+
+Happy analyzing! 🧬🧠
 
