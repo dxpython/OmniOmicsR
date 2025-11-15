@@ -1,0 +1,118 @@
+# OmniGraphDiff Configuration for TCGA Pan-Cancer Dataset
+
+# Data paths
+data:
+  data_dir: "data/tcga_pancancer"
+  omics_file: "tcga_omics.h5"
+  graphs_file: "tcga_graphs.pkl"
+  clinical_file: "tcga_clinical.csv"
+  modalities: ["rna", "protein", "cnv"]
+
+# Model architecture
+model:
+  latent_dim_shared: 32
+  use_cross_attention: true
+  use_sample_gnn: true
+
+  # Per-modality configuration
+  modalities:
+    rna:
+      input_dim: 10000
+      latent_dim_specific: 16
+      encoder_hidden_dims: [512, 256, 128]
+      decoder_hidden_dims: [128, 256, 512]
+      output_dist: "nb"  # Negative binomial for RNA-seq
+      use_feature_gnn: true
+      feature_gnn_config:
+        type: "gcn"
+        num_layers: 3
+
+    protein:
+      input_dim: 5000
+      latent_dim_specific: 16
+      encoder_hidden_dims: [256, 128, 64]
+      decoder_hidden_dims: [64, 128, 256]
+      output_dist: "gaussian"
+      use_feature_gnn: true
+      feature_gnn_config:
+        type: "graphsage"
+        num_layers: 2
+
+    cnv:
+      input_dim: 8000
+      latent_dim_specific: 12
+      encoder_hidden_dims: [256, 128, 64]
+      decoder_hidden_dims: [64, 128, 256]
+      output_dist: "gaussian"
+      use_feature_gnn: false
+
+  # Sample-level GNN
+  sample_gnn_config:
+    type: "graphsage"
+    num_layers: 2
+    hidden_dim: 128
+
+  # Clinical head
+  use_clinical_head: true
+  use_survival: true
+  use_classification: false
+  clinical_hidden_dims: [64, 32]
+
+# Loss configuration
+loss:
+  loss_weights:
+    kl: 0.5
+    graph: 0.1
+    clinical: 1.0
+    contrastive: 0.5
+
+  use_feature_graph_reg: true
+  use_sample_graph_reg: true
+  use_contrastive: true
+  contrastive_temperature: 0.07
+
+# Training configuration
+training:
+  epochs: 100
+  batch_size: 64
+  learning_rate: 0.001
+  weight_decay: 0.0001
+
+  optimizer: "adamw"
+  scheduler:
+    type: "cosine"
+    warmup_steps: 1000
+
+  gradient_clip_norm: 1.0
+  mixed_precision: true
+
+  # Early stopping
+  early_stopping:
+    patience: 15
+    metric: "val_loss"
+    mode: "min"
+
+  # Checkpointing
+  checkpoint_dir: "outputs/checkpoints"
+  save_best_only: true
+  save_frequency: 5
+
+# Logging
+logging:
+  log_dir: "outputs/logs"
+  tensorboard: true
+  log_frequency: 10
+  val_frequency: 1
+
+# Evaluation
+evaluation:
+  metrics:
+    - "c_index"
+    - "ari"
+    - "nmi"
+    - "reconstruction_r2"
+
+# Hardware
+device: "cuda"  # or "cpu"
+num_workers: 4
+seed: 42

@@ -1,15 +1,17 @@
 Package: OmniOmicsR
 Type: Package
-Title: End-to-End Multi-Omics Processing in R
-Version: 0.0.0.9000
+Title: End-to-End Multi-Omics Processing in R with Advanced ML and Clinical Integration
+Version: 2.0.0
 Authors@R: c(
     person(given = "OmniOmicsR", family = "Authors", role = c("aut", "cre"),
            email = "omniomicsr@example.org")
     )
-Description: OmniOmicsR provides an end-to-end multi-omics workflow in R:
-    import, quality control, normalization, batch correction, integration,
-    visualization, statistical analysis, and export. It is designed to work
-    with Bioconductor classes like SummarizedExperiment and MultiAssayExperiment.
+Description: OmniOmicsR v2.0 provides a comprehensive multi-omics workflow with
+    advanced machine learning (VAE, ensemble methods, deep feature selection),
+    Bayesian inference, network analysis, spatial omics, single-cell multi-omics,
+    clinical integration (survival, biomarkers), and production features. Designed
+    for high-dimensional omics data with scalability, parallelization, and
+    reproducibility. Built on Bioconductor S4 classes.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.3)
@@ -51,7 +53,48 @@ Suggests:
     KEGGREST,
     testthat (>= 3.0.0),
     quarto,
-    rmarkdown
+    rmarkdown,
+    keras,
+    tensorflow,
+    reticulate,
+    ranger,
+    randomForest,
+    xgboost,
+    glmnet,
+    Boruta,
+    caret,
+    mlr3,
+    rstan,
+    rjags,
+    bayesplot,
+    WGCNA,
+    igraph,
+    bnlearn,
+    GENIE3,
+    MendelianRandomization,
+    metafor,
+    survival,
+    survminer,
+    pROC,
+    mRMRe,
+    Seurat,
+    Signac,
+    SeuratObject,
+    Giotto,
+    spatstat,
+    SingleCellExperiment,
+    leiden,
+    plumber,
+    swagger,
+    DBI,
+    pool,
+    RSQLite,
+    RPostgres,
+    targets,
+    future,
+    furrr,
+    logger,
+    config
 LinkingTo: Rcpp
 SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
