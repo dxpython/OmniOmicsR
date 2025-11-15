@@ -1,6 +1,4 @@
-# OmniOmicsR
-
-**A Unified Framework for Multi-Omics Data Analysis and Clinical Integration**
+# OmniOmicsR:A Unified, Scalable, and Generative Framework for Next-Generation Multi-Omics and Clinical Integration
 <img src="images/OmniOmicsR.png" alt="OmniOmicsR" width="400" height="200">
 [![R Version](https://img.shields.io/badge/R-4.3%2B-blue.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
