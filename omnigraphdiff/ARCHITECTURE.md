@@ -11,22 +11,22 @@
 │                           OmniGraphDiff System                              │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐            │
-│  │   R Layer    │      │ Python Layer │      │  C++ Backend │            │
-│  │              │      │              │      │              │            │
-│  │  OmniOmicsR  │ ───> │  PyTorch DL  │ ───> │ Sparse Graph │            │
-│  │  Interface   │      │   Models     │      │  Operations  │            │
-│  └──────────────┘      └──────────────┘      └──────────────┘            │
-│         │                      │                      │                   │
-│         │                      │                      │                   │
-│         v                      v                      v                   │
-│  ┌─────────────────────────────────────────────────────────────┐         │
-│  │              Hierarchical Graph Structure                   │         │
-│  │  ┌──────────┐  ┌───────────┐  ┌────────────────┐          │         │
-│  │  │ Feature  │  │  Sample   │  │  Spatial/Cell  │          │         │
-│  │  │  Graph   │  │   Graph   │  │     Graph      │          │         │
-│  │  └──────────┘  └───────────┘  └────────────────┘          │         │
-│  └─────────────────────────────────────────────────────────────┘         │
+│  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐               │
+│  │   R Layer    │      │ Python Layer │      │  C++ Backend │               │
+│  │              │      │              │      │              │               │
+│  │  OmniOmicsR  │ ───> │  PyTorch DL  │ ───> │ Sparse Graph │               │
+│  │  Interface   │      │   Models     │      │  Operations  │               │
+│  └──────────────┘      └──────────────┘      └──────────────┘               │
+│         │                      │                      │                     │
+│         │                      │                      │                     │
+│         v                      v                      v                     │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │              Hierarchical Graph Structure                   │            │
+│  │  ┌──────────┐  ┌───────────┐  ┌────────────────┐            │            │
+│  │  │ Feature  │  │  Sample   │  │  Spatial/Cell  │            │            │
+│  │  │  Graph   │  │   Graph   │  │     Graph      │            │            │
+│  │  └──────────┘  └───────────┘  └────────────────┘            │            │
+│  └─────────────────────────────────────────────────────────────┘            │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -348,24 +348,24 @@ fit_omnigraphdiff <- function(omniproject,
           ↓
 5. Model Forward Pass (PyTorch + C++)
    ┌──────────────────────────────────────────────────────┐
-   │ Input: X^(1), ..., X^(M), G_feat, G_sample          │
+   │ Input: X^(1), ..., X^(M), G_feat, G_sample           │
    │   ↓                                                  │
-   │ Per-modality GNN encoding (feature graphs)          │
+   │ Per-modality GNN encoding (feature graphs)           │
    │   ↓                                                  │
-   │ Cross-modal attention fusion                        │
+   │ Cross-modal attention fusion                         │
    │   ↓                                                  │
-   │ Sample-level GNN (sample graph)                     │
+   │ Sample-level GNN (sample graph)                      │
    │   ↓                                                  │
-   │ Latent sampling (reparameterization trick)          │
+   │ Latent sampling (reparameterization trick)           │
    │   ↓                                                  │
-   │ Per-modality GNN decoding (feature graphs)          │
+   │ Per-modality GNN decoding (feature graphs)           │
    │   ↓                                                  │
-   │ Output: X̂^(1), ..., X̂^(M), Z_shared, Z_specific   │
+   │ Output: X̂^(1), ..., X̂^(M), Z_shared, Z_specific      │
    └──────────────────────────────────────────────────────┘
           ↓
 6. Loss Computation (PyTorch)
    ┌──────────────────────────────────────────────────────┐
-   │ L_total = L_recon + λ₁L_KL + λ₂L_graph +            │
+   │ L_total = L_recon + λ₁L_KL + λ₂L_graph +             │
    │           λ₃L_clinical + λ₄L_contrastive             │
    └──────────────────────────────────────────────────────┘
           ↓
@@ -401,7 +401,7 @@ fit_omnigraphdiff <- function(omniproject,
           ↓
 3. Encoding (forward pass through encoder only)
    ┌──────────────────────────────────────────────────────┐
-   │ Z_new = Encoder(X_new, G_feat, G_sample)            │
+   │ Z_new = Encoder(X_new, G_feat, G_sample)             │
    └──────────────────────────────────────────────────────┘
           ↓
 4. Downstream Tasks
