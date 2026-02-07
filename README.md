@@ -287,7 +287,7 @@ I also sincerely thank our friends from **Beijing University of Aeronautics and 
 
 ## License
 
-MIT License © 2025 Dustin Dong
+MIT License © Dustin Dong
 
 ---
 
